@@ -1,0 +1,101 @@
+#%RAML 1.0
+title: alumnos.xapi
+
+types:
+  alumno: !include Types/alumno.raml
+  alumnoNoID: !include Types/alumnoNoID.raml
+  alumnoUpdate: !include Types/alumnoUpdate.raml
+/alumnno:
+  get:
+    queryParameters:
+      format:
+        required: false
+        enum:
+          - json
+          - xml
+          - csv
+          - textplain
+      gender:
+        required: false
+        enum:
+          - masculino
+          - femenino
+          - otro
+      status:
+        required: false
+        enum:
+          - aprobado
+          - desaprobado
+    responses:
+      200:
+        body:
+          application/json:
+            type: alumno[]
+            examples:
+              output: !include Examples/alumnosExample.raml
+      500:
+          body:
+            application/json:
+              example:
+                {
+                  "message": "Internal server error"
+                }
+  post:
+    responses:
+      200:
+        body:
+          application/json:
+            type: alumnoNoID[]
+            examples:
+              input: !include Examples/insertExample.raml
+      500:
+          body:
+            application/json:
+              example:
+                {
+                  "message": "Internal server error"
+                }
+  /{id}:
+    get:
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include Examples/alumnoExample.raml
+        500:
+          body:
+            application/json:
+              example:
+                {
+                  "message": "Internal server error"
+                }
+    patch:
+      body:
+        application/json:
+          type: alumnoUpdate
+          example: !include Examples/updateExample.raml
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include Examples/updateExample.raml
+        500:
+          body:
+            application/json:
+              example:
+                {
+                  "message": "Internal server error"
+                }
+    delete:
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include Examples/deleteExample.raml
+        500:
+          body:
+            application/json:
+              example:
+                {
+                  "message": "Internal server error"
+                }
